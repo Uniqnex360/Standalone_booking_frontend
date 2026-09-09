@@ -13,7 +13,8 @@ export async function POST(req: Request) {
     });
 
     const user = result.user;
-    await createSession(user.id);
+      await createSession(result.token);
+
 
     return NextResponse.json({
       user: {
