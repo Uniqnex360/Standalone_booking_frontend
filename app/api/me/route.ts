@@ -5,8 +5,9 @@ import { fetchFastAPI } from "@/lib/fastapi";
 export async function GET() {
   try {
     const token = await getSessionToken();
-    if (!token) return NextResponse.json(null);
+    if (!token) return NextResponse.json({ user: null });
 
+    // Fetch user profile from FastAPI using the session token
     const user = await fetchFastAPI("/auth/me", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -14,11 +15,13 @@ export async function GET() {
     });
 
     return NextResponse.json({
-      id: user.id,
-      name: user.email.split("@")[0],
-      email: user.email,
+      user: {
+        id: user.id,
+        name: user.email.split("@")[0],
+        email: user.email,
+      },
     });
   } catch {
-    return NextResponse.json(null);
+    return NextResponse.json({ user: null });
   }
 }

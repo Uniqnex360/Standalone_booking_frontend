@@ -2,24 +2,39 @@ import { NextResponse } from "next/server";
 import { getSessionToken } from "@/lib/auth";
 import { fetchFastAPI } from "@/lib/fastapi";
 
+export async function GET() {
+  try {
+    const token = await getSessionToken();
+    if (!token) {
+      return NextResponse.json({ error: "Please login first" }, { status: 401 });
+    }
+
+    // Call FastAPI GET /v1/bookings/me
+    const bookings = await fetchFastAPI("/bookings/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return NextResponse.json(bookings);
+  } catch (e: any) {
+    return NextResponse.json({ error: e.message || "Failed to fetch bookings" }, { status: 500 });
+  }
+}
+
 export async function POST(req: Request) {
   try {
     const token = await getSessionToken();
     if (!token) {
-      return NextResponse.json(
-        { error: "Please login first" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Please login first" }, { status: 401 });
     }
 
     const { showId, seatIds } = await req.json();
     if (!Array.isArray(seatIds) || !seatIds.length) {
-      return NextResponse.json(
-        { error: "Select at least one seat" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Select at least one seat" }, { status: 400 });
     }
 
+    // Call FastAPI atomic booking endpoint
     const result = await fetchFastAPI("/bookings", {
       method: "POST",
       headers: {
@@ -42,9 +57,6 @@ export async function POST(req: Request) {
       },
     });
   } catch (e: any) {
-    return NextResponse.json(
-      { error: e.message || "Booking failed" },
-      { status: 409 }
-    );
+    return NextResponse.json({ error: e.message || "Booking failed" }, { status: 409 });
   }
 }
