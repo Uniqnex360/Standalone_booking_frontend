@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 export default function MyBookings() {
   const [bookings, setBookings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isLoggedOut, setIsLoggedOut] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
 
@@ -15,10 +16,14 @@ export default function MyBookings() {
       setLoading(true);
       const res = await fetch("/api/bookings");
       if (res.status === 401) {
-        router.push("/login");
+        setIsLoggedOut(true);
         return;
       }
       const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Failed to load bookings");
+        return;
+      }
       setBookings(Array.isArray(data) ? data : []);
     } catch (err: any) {
       setError(err.message || "Failed to load bookings");
@@ -51,8 +56,24 @@ export default function MyBookings() {
 
   if (loading) {
     return (
-      <main className="container">
-        <p>Loading your bookings...</p>
+      <main className="container" style={{ padding: "40px", textAlign: "center" }}>
+        <p style={{ color: "#666" }}>Loading your bookings...</p>
+      </main>
+    );
+  }
+
+  if (isLoggedOut) {
+    return (
+      <main className="container" style={{ maxWidth: "480px", marginTop: "40px", textAlign: "center" }}>
+        <div className="card" style={{ padding: "32px" }}>
+          <h2 style={{ margin: "0 0 8px 0" }}>Sign In to View Bookings</h2>
+          <p style={{ color: "#666", fontSize: "14px", marginBottom: "20px" }}>
+            Please log in with your account to see your booked movie tickets.
+          </p>
+          <Link className="btn" href="/login" style={{ display: "inline-block", padding: "10px 24px" }}>
+            Login / Register
+          </Link>
+        </div>
       </main>
     );
   }
@@ -63,8 +84,8 @@ export default function MyBookings() {
       {error && <p className="error">{error}</p>}
 
       {bookings.length === 0 ? (
-        <div className="card" style={{ padding: "20px", textAlign: "center" }}>
-          <p>You have no bookings yet.</p>
+        <div className="card" style={{ padding: "30px", textAlign: "center" }}>
+          <p style={{ color: "#666", marginBottom: "16px" }}>You have no active bookings.</p>
           <Link className="btn" href="/">
             Explore Showtimes
           </Link>

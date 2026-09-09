@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getSessionToken } from "@/lib/auth";
+import { getSessionToken, clearSession } from "@/lib/auth";
 import { fetchFastAPI } from "@/lib/fastapi";
 
 export async function GET() {
@@ -21,7 +21,9 @@ export async function GET() {
         email: user.email,
       },
     });
-  } catch {
+  } catch (err: any) {
+    // If token is invalid or user was deleted from DB, clear the cookie
+    await clearSession();
     return NextResponse.json({ user: null });
   }
 }

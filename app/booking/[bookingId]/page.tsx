@@ -104,7 +104,6 @@ export default function BookingPage() {
         return;
       }
 
-      // Success -> Redirect to confirmation page
       router.push(`/confirmation/${resData.booking.id}`);
     } catch (err: any) {
       setError(err.message || "Failed to connect to booking service");
@@ -112,7 +111,6 @@ export default function BookingPage() {
     }
   };
 
-  // Group rows by price tier (Classic, Prime, Recliner)
   const tiers: { name: string; price: number; rows: Row[] }[] = [];
   data.rows.forEach((row) => {
     const price = row.price_cents / 100;
@@ -130,7 +128,6 @@ export default function BookingPage() {
 
   return (
     <main style={{ maxWidth: "1400px", margin: "0 auto", padding: "20px 16px 120px 16px" }}>
-      {/* Header */}
        <div style={{ marginBottom: "16px" }}>
         <Link href={`/movies/${bookingId}`} style={{ textDecoration: "none", color: "#f11d48", fontWeight: "bold", fontSize: "14px" }}>
           ← Back to Showtimes
@@ -175,7 +172,6 @@ export default function BookingPage() {
           </div>
           {tiers.map((tier) => (
             <div key={tier.price} style={{ width: "100%" }}>
-              {/* Category / Tier Header */}
               <div
                 style={{
                   fontSize: "12px",
@@ -191,7 +187,6 @@ export default function BookingPage() {
                 {tier.name} — ₹{tier.price.toFixed(2)}
               </div>
 
-              {/* Rows inside Tier */}
               <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
                 {tier.rows.map((row) => {
                   const midIndex = Math.floor(row.seats.length / 2);
@@ -206,7 +201,6 @@ export default function BookingPage() {
                         gap: "6px",
                       }}
                     >
-                      {/* Left Row Label */}
                       <span
                         style={{
                           width: "24px",
@@ -219,7 +213,6 @@ export default function BookingPage() {
                         {row.label}
                       </span>
 
-                      {/* Seats with Center Aisle Walkway */}
                       <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
                         {row.seats.map((seat, index) => {
                           const isSelected = selectedSeats.some((s) => s.id === seat.id);
@@ -272,7 +265,6 @@ export default function BookingPage() {
                         })}
                       </div>
 
-                      {/* Right Row Label */}
                       <span
                         style={{
                           width: "24px",
@@ -291,10 +283,8 @@ export default function BookingPage() {
             </div>
           ))}
 
-          {/* BookMyShow Curved Screen Indicator */}
           
 
-          {/* Legend */}
           <div style={{ display: "flex", gap: "24px", fontSize: "12px", color: "#6b7280", marginTop: "12px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
               <div style={{ width: "16px", height: "16px", border: "1px solid #10b981", borderRadius: "4px", backgroundColor: "#fff" }} />
@@ -312,7 +302,6 @@ export default function BookingPage() {
         </div>
       </div>
 
-      {/* Sticky Bottom Checkout Bar */}
       {selectedSeats.length > 0 && (
         <div
           style={{
