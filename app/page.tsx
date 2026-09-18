@@ -25,9 +25,8 @@ export default async function Home() {
         screen: st.screen_name,
         description: `Now Showing on ${st.screen_name} at ${st.cinema_name}.`,
         posterUrl:
-          st.movie_title === "I Am Game"
-            ? "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500&auto=format&fit=crop&q=60"
-            : "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&auto=format&fit=crop&q=60",
+          st.poster_url ||
+          "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&auto=format&fit=crop&q=60",
       };
     }
   }
