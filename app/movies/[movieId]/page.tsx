@@ -48,6 +48,7 @@ export default async function MoviePage({
       id: s.id,
       startsAt: s.starts_at,
       price: 290,
+      cinema: s.cinema_name,
       screen: {
         name: s.screen_name,
       },
@@ -72,7 +73,7 @@ export default async function MoviePage({
           <p>
             {movie.language} · {movie.certificate} · {movie.durationMin} mins
           </p>
-          <p style={{ color: "#666" }}>Playing at {movie.cinema}</p>
+          <p style={{ color: "#666" }}>Available showtimes</p>
 
           <h2 style={{ marginTop: "24px", borderTop: "1px solid #eee", paddingTop: "16px" }}>
             Select a showtime
@@ -89,7 +90,7 @@ export default async function MoviePage({
                 </b>
                 <br />
                 <span className="muted">
-                  {s.screen.name} · ₹{s.price}
+                  {s.cinema} · {s.screen.name} · ₹{s.price}
                 </span>
               </Link>
             ))}
