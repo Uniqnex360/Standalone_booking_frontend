@@ -31,7 +31,7 @@ export default async function MoviePage({
 
   // Filter showtimes for this specific movie title
   const movieShowtimes = showtimes.filter(
-    (s) => s.movie_title === selectedShow.movie_title && s.cinema_name === selectedShow.cinema_name
+    (s) => s.movie_title === selectedShow.movie_title
   );
 
   const movie = {
