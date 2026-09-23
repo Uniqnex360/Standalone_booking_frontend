@@ -16,7 +16,7 @@ export async function fetchFastAPI(endpoint: string, options: RequestInit = {}) 
     let errorDetail = `FastAPI error: ${response.status}`;
     try {
       const err = await response.json();
-      errorDetail = err.detail || errorDetail;
+      { const r = err.detail ?? err.error; errorDetail = typeof r === "string" ? r : (r && typeof r === "object" ? (r.code ?? JSON.stringify(r)) : errorDetail); }
     } catch {
       // not json
     }
