@@ -82,7 +82,9 @@ export default async function MoviePage({
             {movie.shows.map((s) => (
               <Link className="show" href={`/booking/${s.id}`} key={s.id}>
                 <b>
-                  {new Date(s.startsAt).toLocaleTimeString("en-IN", {
+                  {new Date(s.startsAt).toLocaleString("en-IN", {
+                    day: "numeric",
+                    month: "short",
                     hour: "numeric",
                     minute: "2-digit",
                     timeZone: "Asia/Kolkata",
