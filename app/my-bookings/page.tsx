@@ -137,7 +137,7 @@ export default function MyBookings() {
                   <Link className="btn" href={`/confirmation/${b.ref_code}`}>
                     View Ticket
                   </Link>
-                  {!isCancelled && (
+                  {!isCancelled && new Date(b.starts_at) >= new Date() && (
                     <button
                       onClick={() => handleCancel(b.id)}
                       style={{
